@@ -34,7 +34,23 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
+  },
+
+  '/api': {
+    controller: 'ApiController',
+    action: 'apiLanding'
+  },
+
+  '/api/user/register': {
+    controller: 'ApiController',
+    action: 'registerUser'
+  },
+
+  '/api/user/login': {
+    controller: 'ApiController',
+    action: 'loginUser'
   }
+
 
   /***************************************************************************
   *                                                                          *
