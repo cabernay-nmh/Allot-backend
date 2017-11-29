@@ -107,6 +107,7 @@ module.exports = {
             .then(function(valid)  {
 
               if (!valid) {
+                res.status = 403;
                 return res.json(invalidLoginJson);
               }
 

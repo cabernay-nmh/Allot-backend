@@ -1,47 +1,45 @@
 # allot
 
-User
-####
+### User
 
-    User Registration
-    -----------------
-    URL:
-    /register
+#####User Registration 
+    
+URL: /register
 
-    METHOD:
-    PUT
+METHOD: PUT
 
-    DATA PARAMS:
+DATA PARAMS:
+    
     firstName = "String"
     lastName = "String"
     email="String"
     password="String"
+    
+SUCCESS RESPONSE:Code: 200
 
-    SUCCESS RESPONSE:
-    Code: 200
     Content: { id : 12, name : "Nay Sharma", token : "abshdbjhcjhcbwhdbcjw" }
 
-    ERROR RESPONSE:
+ERROR RESPONSE:
+
     Code: 403 FORBIDDEN
     Content: { error : "Server refused to register" }
 
-    User Authentication
-    -------------------
-    URL:
-    /login
+#####User Authentication
+URL: /login
 
-    METHOD:
-    PUT
+METHOD: PUT
 
     DATA PARAMS:
-    username=[String]
+    email=[String]
     password=[String]
+    
+SUCCESS RESPONSE:
 
-    SUCCESS RESPONSE:
     Code: 200
     Content: { id : 12, name : "Michael Bloom", token : "abshdbjhcjhcbwhdbcjw" }
 
-    ERROR RESPONSE:
+ERROR RESPONSE:
+
     Code: 404 NOT FOUND
     Content: { error : "User doesn't exist" }
 
