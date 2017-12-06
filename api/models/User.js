@@ -31,6 +31,12 @@ module.exports = {
       columnName: 'encryptedPassword'
     },
 
+    groups: {
+      collection: 'group',
+      via: 'members',
+      dominant: true
+    },
+
     toJSON: function() {
 
       var obj = this.toObject();
@@ -64,6 +70,19 @@ module.exports = {
           reject(err);
         }
       })
+    });
+  },
+
+  compareToken: function(token, user) {
+
+    return new promise(function (resolve, reject) {
+
+      if (token === user.token) {
+        resolve(true);
+      } else {
+        reject("Token does not match");
+      }
+
     });
   }
 };

@@ -11,119 +11,7 @@ module.exports = {
 
 		return res.json({page: "API Documentation"});
 
-	},
-
-	registerUser: function(req, res) {
-
-	  var firstName = req.param("firstName");
-	  var lastName = req.param("lastName");
-    var email = req.param("email");
-    var password = req.param("password");
-
-    // console.log(firstName);
-    // console.log(lastName);
-    // console.log(email);
-    // console.log(password);
-
-    var requestingUser = {firstName: firstName, lastName: lastName, email: email, password: password};
-
-	  if (
-	    (!sanitizeString(firstName)) ||
-      (!sanitizeString(lastName)) ||
-      (!sanitizeString(email)) ||
-      (!sanitizeString(password))) {
-
-      return res.badRequest(badRequestJson);
-
-    } else {
-
-      // check if user exists
-      User
-        .findOne({email: email})
-        .exec(function(err, user) {
-
-          // user does not exist
-          if (!user) {
-
-            User
-              .create(requestingUser)
-              .exec(function(err, newUser){
-
-                // server refused
-                if (err) {
-
-                  return res.json(unexpectedServerErrorJson);
-
-                } else {
-
-                  var createdUser = {};
-                  createdUser.firstName = newUser.firstName;
-                  createdUser.lastName = newUser.lastName;
-                  createdUser.email = newUser.email;
-                  createdUser.status = 200;
-                  createdUser.msg = "User created successfully"
-                  createdUser.token = JwtService.issue({email: newUser.email})
-
-                  return res.json(createdUser);
-                }
-              });
-          }
-
-          // user already exists
-          else {
-
-            return res.json(alreadyRegisteredConflictJson);
-          }
-
-        });
-    }
-
-	},
-
-  loginUser: function(req,res) {
-
-	  var email = req.param("email");
-	  var password = req.param("password");
-
-	  if (!sanitizeString(email) ||
-      !sanitizeString(password)) {
-
-      return res.badRequest(badRequestJson);
-    }
-
-    else {
-
-	    User
-        .findOne({email: email})
-        .exec(function(err, user) {
-
-          if (err) {
-
-            return res.json(userDoesNotExistJson);
-          }
-
-          User
-            .comparePassword(password, user)
-            .then(function(valid)  {
-
-              if (!valid) {
-                res.status = 403;
-                return res.json(invalidLoginJson);
-              }
-
-              user.status = 200;
-              user.msg = "Login successfull";
-              user.token = JwtService.issue({email: user.email});
-
-              return res.json(user);
-            })
-            .catch(function(err){
-              return res.json(invalidLoginJson);
-            });
-      })
-    }
-  }
-
+	}
 
 };
 
@@ -148,4 +36,5 @@ var sanitizeString = function(unsanitizedString) {
   } else {
     return true;
   }
+
 }

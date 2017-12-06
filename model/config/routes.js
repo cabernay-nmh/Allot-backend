@@ -34,47 +34,7 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  },
-
-  '/api': {
-    controller: 'ApiController',
-    action: 'apiLanding'
-  },
-
-  // login/register
-
-  '/api/user/register': {
-    controller: 'RegisterController',
-    action: 'registerUser'
-  },
-
-  '/api/user/login': {
-    controller: 'LoginController',
-    action: 'loginUser'
-  },
-
-  // groups
-
-  '/api/group/create': {
-    controller: 'GroupController',
-    action: 'createGroup'
-  },
-
-  '/api/group/join': {
-    controller: 'GroupController',
-    action: 'joinGroup'
-  },
-
-  '/api/group/joined': {
-    controller: 'GroupController',
-    action: 'getJoinedGroups'
-  },
-
-  '/api/group/info': {
-    controller: 'GroupController',
-    action: 'getGroupInfo'
   }
-
 
   /***************************************************************************
   *                                                                          *

@@ -45,28 +45,27 @@ ERROR RESPONSE:
 
 ================================================================================
 
-Group
-#####
+###Group
 
-    Create Group
-    ------------
+#####Create Group
 
-    URL:
-    /group
+URL: /group
 
-    METHOD:
-    POST
+METHOD: POST
 
-    DATA PARAMS:
+DATA PARAMS:
+
     user_id=[Integer]
     group_name=[String]
     token=[String]
 
-    SUCCESS RESPONSE:
+SUCCESS RESPONSE:
+
     Code: 200
     Content: { id : 101, group_name : "MAD", members : [12], owner_id : "12" }
 
-    ERROR RESPONSE:
+ERROR RESPONSE:
+
     Code: 403
     Content: { error : "Users has created too many groups" }
 
