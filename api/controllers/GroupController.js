@@ -151,42 +151,49 @@ module.exports = {
 
                   } else {
 
-                    console.log("members?? " + groupInfo);
-
                     // add creator to group
-                    user.groups.add(record.id);
-                    user.save(function(err){
+                    user
+                      .groups
+                      .add(record.id);
 
-                      if (err) {
+                    user
+                      .save(function(err){
 
-                        return res.json(unexpectedServerErrorJson);
+                        if (err) {
 
-                      } else {
+                          return res.json(unexpectedServerErrorJson);
 
-                        Group.findOne({id: record.id}).populate('members').exec(function(err, freshGroup){
+                        }
 
-                          var createdGroup = {};
-                          createdGroup.name = freshGroup.name;
-                          createdGroup.code = freshGroup.code;
-                          createdGroup.status = 200;
-                          createdGroup.msg = "Group joined successfully";
-                          createdGroup.members = freshGroup.members;
+                        else {
 
-                          createdGroup.members.forEach(function(ele) {
-                            delete ele.token;
+                          Group
+                            .findOne({id: record.id})
+                            .populate('members')
+                            .exec(function(err, freshGroup){
+
+                              var createdGroup = {};
+                              createdGroup.name = freshGroup.name;
+                              createdGroup.code = freshGroup.code;
+                              createdGroup.status = 200;
+                              createdGroup.msg = "Group joined successfully";
+                              createdGroup.members = freshGroup.members;
+
+                              createdGroup.members.forEach(function(ele) {
+                                delete ele.token;
+                              });
+
+                              return res.json(createdGroup);
+
                           });
-
-                        });
-                      }
-                    });
+                        }
+                      });
                   }
                 });
-
-              return res.json(createdGroup);
-
             })
             .catch(function(err){
 
+              console.log(err);
               res.status = 403;
               return res.json(forbiddenRequestJson);
             });
