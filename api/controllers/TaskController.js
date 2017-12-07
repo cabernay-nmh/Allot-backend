@@ -250,7 +250,12 @@ module.exports = {
                   Promise
                     .all(getTasksPromises)
                     .then(function(allTasks){
-                      return res.json(allTasks);
+
+                      var responseObj = {};
+                      responseObj.status = 200;
+                      responseObj.msg = "Tasks Fetched Successfully"
+                      responseObj.tasks = allTasks
+                      return res.json(responseObj);
                     })
                     .catch(function(err){
                       return res.json(unexpectedServerErrorJson);
@@ -333,7 +338,12 @@ module.exports = {
               Promise
                 .all(getTasksPromises)
                 .then(function(allTasks){
-                  return res.json(allTasks);
+
+                  var responseObj = {};
+                  responseObj.status = 200;
+                  responseObj.msg = "Tasks Fetched Successfully"
+                  responseObj.tasks = allTasks
+                  return res.json(responseObj);
                 })
                 .catch(function(err){
                   return res.json(unexpectedServerErrorJson);
