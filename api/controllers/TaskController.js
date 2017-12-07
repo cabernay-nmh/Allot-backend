@@ -23,13 +23,15 @@ module.exports = {
     var taskLat = req.param("lat");
     var taskLong = req.param("long");
     var taskTime = req.param("time");
+    var taskDescription = req.param("description");
 
     var taskInfo = {};
     taskInfo.title = taskTitle;
-    taskInfo.lat = taskLat;
-    taskInfo.long = taskLong;
+    taskInfo.latitude = taskLat;
+    taskInfo.longitude = taskLong;
     taskInfo.time = taskTime;
     taskInfo.groupCode = groupCode;
+    taskInfo.description = taskDescription;
 
     if (taskIsLocationEnabled === '1') {
       taskInfo.isLocationEnabled = true;
@@ -231,7 +233,27 @@ module.exports = {
                   var tasks = {};
                   tasks = groupObj.tasksInGroup;
 
-                  return res.json(tasks);
+                  var getTasksPromises = tasks.map(function(eachTask){
+
+                    // to do: delete token attribute for user
+
+                    return Task
+                      .findOne({id: eachTask.id})
+                      .populate('participants')
+                      .then(function(eachTaskInfo){
+                        return eachTaskInfo;
+                      });
+                  });
+
+                  Promise
+                    .all(getTasksPromises)
+                    .then(function(allTasks){
+                      return res.json(allTasks);
+                    })
+                    .catch(function(err){
+                      return res.json(unexpectedServerErrorJson);
+                    });
+
                 });
 
             })
@@ -294,7 +316,28 @@ module.exports = {
                 }
               });
 
-              return res.json(tasksForParticularGroup);
+              var getTasksPromises = tasksForParticularGroup.map(function(eachTask){
+
+                // to do: delete token attribute for user
+
+                return Task
+                  .findOne({id: eachTask.id})
+                  .populate('participants')
+                  .then(function(eachTaskInfo){
+                    return eachTaskInfo;
+                  });
+              });
+
+              Promise
+                .all(getTasksPromises)
+                .then(function(allTasks){
+                  return res.json(allTasks);
+                })
+                .catch(function(err){
+                  return res.json(unexpectedServerErrorJson);
+                });
+
+              // return res.json(tasksForParticularGroup);
 
             })
             .catch(function(err){

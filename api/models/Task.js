@@ -32,12 +32,12 @@ module.exports = {
       via: 'userTasks'
     },
 
-    lat: {
+    latitude: {
       type: 'float',
       defaultsTo: 0.0
     },
 
-    long: {
+    longitude: {
       type: 'float',
       defaultsTo: 0.0
     },
@@ -45,6 +45,14 @@ module.exports = {
     isLocationEnabled: {
       type: 'boolean',
       defaultsTo: false
+    },
+
+    time: {
+      type: 'string'
+    },
+
+    description: {
+      type: 'string'
     }
   }
 };
