@@ -22,6 +22,11 @@ module.exports = {
     members: {
       collection: 'user',
       via: 'groups'
+    },
+
+    tasksInGroup: {
+      collection: 'task',
+      via: 'group'
     }
 
   },

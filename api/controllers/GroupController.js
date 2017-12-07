@@ -256,7 +256,7 @@ module.exports = {
 
                       delete groupArray[groupIndex].members[memberIndex].token;
                     });
-                  })
+                  });
 
                   var responseObj = {};
                   responseObj.status =  200;

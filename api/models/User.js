@@ -37,6 +37,19 @@ module.exports = {
       dominant: true
     },
 
+    tasksCreated: {
+      collection: 'task',
+      via: 'creator',
+      dominant: true
+    },
+
+    userTasks: {
+      collection: 'task',
+      via: 'participants',
+      dominant: true
+    },
+
+
     toJSON: function() {
 
       var obj = this.toObject();

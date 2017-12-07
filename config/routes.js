@@ -73,6 +73,23 @@ module.exports.routes = {
   '/api/group/info': {
     controller: 'GroupController',
     action: 'getGroupInfo'
+  },
+
+  // tasks
+
+  '/api/task/create': {
+    controller: 'TaskController',
+    action: 'createTask'
+  },
+
+  '/api/task/getGroupTasks': {
+    controller: 'TaskController',
+    action: 'getGroupTasks'
+  },
+
+  '/api/task/getUserTasks': {
+    controller: 'TaskController',
+    action: 'getUserTasks'
   }
 
 
