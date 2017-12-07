@@ -127,6 +127,7 @@ module.exports = {
                         return User
                           .findOne({id: eachParticipantId})
                           .populate('userTasks')
+                          .populate('creator')
                           .then(function(eachParticipant){
 
                             if (eachParticipant) {
@@ -240,6 +241,7 @@ module.exports = {
                     return Task
                       .findOne({id: eachTask.id})
                       .populate('participants')
+                      .populate('creator')
                       .then(function(eachTaskInfo){
                         return eachTaskInfo;
                       });
