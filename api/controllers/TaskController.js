@@ -20,10 +20,11 @@ module.exports = {
     var taskTitle = req.param("title");
     var taskParticipants = req.param("participants"); // csv user ids
     var taskIsLocationEnabled = req.param("isLocationEnabled"); // 0 false 1 true
-    var taskLat = req.param("lat");
-    var taskLong = req.param("long");
+    var taskLat = req.param("latitude");
+    var taskLong = req.param("longitude");
     var taskTime = req.param("time");
     var taskDescription = req.param("description");
+    var taskIsDone = req.param("isDone");
 
     var taskInfo = {};
     taskInfo.title = taskTitle;
@@ -37,6 +38,12 @@ module.exports = {
       taskInfo.isLocationEnabled = true;
     } else {
       taskInfo.isLocationEnabled = false;
+    }
+
+    if (taskIsDone === '1') {
+      taskInfo.isDone = true;
+    } else {
+      taskInfo.isDone = false;
     }
 
 
@@ -127,7 +134,6 @@ module.exports = {
                         return User
                           .findOne({id: eachParticipantId})
                           .populate('userTasks')
-                          .populate('creator')
                           .then(function(eachParticipant){
 
                             if (eachParticipant) {

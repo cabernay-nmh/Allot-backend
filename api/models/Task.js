@@ -47,6 +47,11 @@ module.exports = {
       defaultsTo: false
     },
 
+    isDone: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+
     time: {
       type: 'string'
     },
