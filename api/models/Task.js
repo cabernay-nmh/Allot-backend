@@ -58,6 +58,11 @@ module.exports = {
 
     description: {
       type: 'string'
+    },
+
+    repetition: {
+      type: 'integer',
+      defaultsTo: 0
     }
   }
 };

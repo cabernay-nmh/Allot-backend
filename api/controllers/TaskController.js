@@ -25,6 +25,8 @@ module.exports = {
     var taskTime = req.param("time");
     var taskDescription = req.param("description");
     var taskIsDone = req.param("isDone");
+    var taskRepetition = req.param("repetition");
+
 
     var taskInfo = {};
     taskInfo.title = taskTitle;
@@ -33,6 +35,9 @@ module.exports = {
     taskInfo.time = taskTime;
     taskInfo.groupCode = groupCode;
     taskInfo.description = taskDescription;
+    taskInfo.repetition = taskRepetition;
+
+    console.log(taskInfo);
 
     if (taskIsLocationEnabled === '1') {
       taskInfo.isLocationEnabled = true;
