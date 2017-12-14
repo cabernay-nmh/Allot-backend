@@ -37,7 +37,7 @@ module.exports = {
     taskInfo.description = taskDescription;
     taskInfo.repetition = taskRepetition;
 
-    console.log(taskInfo);
+    console.log("Log---> " + taskInfo);
 
     if (taskIsLocationEnabled === '1') {
       taskInfo.isLocationEnabled = true;
@@ -142,7 +142,6 @@ module.exports = {
                           .then(function(eachParticipant){
 
                             if (eachParticipant) {
-                              console.log(eachParticipant);
                               eachParticipant.userTasks.add(record.id);
                               eachParticipant.save(function (err) {});
                             }
