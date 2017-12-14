@@ -31,6 +31,10 @@ module.exports = {
       columnName: 'encryptedPassword'
     },
 
+    androidDeviceId: {
+      type: 'string'
+    },
+
     groups: {
       collection: 'group',
       via: 'members',

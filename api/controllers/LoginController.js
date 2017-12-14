@@ -12,6 +12,8 @@ module.exports = {
     var email = req.param("email");
     var password = req.param("password");
 
+    var androidDeviceId = req.param("androidDeviceId");
+
     if (!sanitizeString(email) ||
       !sanitizeString(password)) {
 
@@ -43,7 +45,7 @@ module.exports = {
               user.token = JwtService.issue({email: user.email});
 
               // update user with new token
-              User.update({id: user.id}, {token: user.token})
+              User.update({id: user.id}, {token: user.token, androidDeviceId: androidDeviceId})
                 .exec(function(err, record){});
 
               return res.json(user);

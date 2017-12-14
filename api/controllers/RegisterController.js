@@ -13,13 +13,14 @@ module.exports = {
     var lastName = req.param("lastName");
     var email = req.param("email");
     var password = req.param("password");
+    var androidDeviceId = req.param("androidDeviceId");
 
     // console.log(firstName);
     // console.log(lastName);
     // console.log(email);
     // console.log(password);
 
-    var requestingUser = {firstName: firstName, lastName: lastName, email: email, password: password};
+    var requestingUser = {firstName: firstName, lastName: lastName, email: email, password: password, androidDeviceId: androidDeviceId};
 
     if (
       (!sanitizeString(firstName)) ||
