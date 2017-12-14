@@ -37,8 +37,6 @@ module.exports = {
     taskInfo.description = taskDescription;
     taskInfo.repetition = taskRepetition;
 
-    console.log("Log---> ");
-    console.log(req);
 
     if (taskIsLocationEnabled === '1') {
       taskInfo.isLocationEnabled = true;
@@ -370,6 +368,68 @@ module.exports = {
             });
         })
     }
+  },
+
+  markAsDone: function (req,res) {
+
+    // user creds
+    var id = req.param("id");
+    var token = req.param("token");
+
+    // task Id
+    var taskId = req.param("taskId");
+
+
+    if (!sanitizeString(id) ||
+      !sanitizeString(token) ||
+      !sanitizeString(taskId)) {
+
+      return res.badRequest(badRequestJson);
+    }
+
+    else {
+
+      User
+        .findOne({id: id})
+        .exec(function(err, user) {
+
+          if (err) {
+            return res.json(unexpectedServerErrorJson);
+          }
+
+          if (!user) {
+
+            return res.json(userDoesNotExistJson);
+          }
+
+          User
+            .compareToken(token, user)
+            .then(function(valid)  {
+
+              if (!valid) {
+                res.status = 403;
+                return res.json(forbiddenRequestJson);
+              }
+
+              Task
+                .update({id: taskId}, {isDone: true})
+                .exec(function(err, updated) {
+
+                  if (err) {
+                    return res.json(unexpectedServerErrorJson);
+                  } else {
+                    return res.json(taskMarkedAsDone);
+                  }
+                });
+
+            })
+            .catch(function(err){
+
+              res.status = 403;
+              return res.json(forbiddenRequestJson);
+            });
+        })
+    }
   }
 
 };
@@ -383,6 +443,7 @@ var userDoesNotExistJson = {status: 409, msg: "User does not exist"};
 var invalidLoginJson = {status: 403, msg: "Invalid email/password"};
 var invalidGroupCode = {status: 403, msg: "Invalid Group Code"};
 var taskCreatedCode = {status: 200, msg: "Task Created"};
+var taskMarkedAsDone = {status: 200, msg: "Task Marked As Done"};
 
 /**
  * Sanitizes input.

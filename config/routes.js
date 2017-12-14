@@ -90,6 +90,11 @@ module.exports.routes = {
   '/api/task/getUserTasks': {
     controller: 'TaskController',
     action: 'getUserTasks'
+  },
+
+  '/api/task/markAsDone': {
+    controller: 'TaskController',
+    action: 'markAsDone'
   }
 
 
