@@ -37,7 +37,7 @@ module.exports = {
     taskInfo.description = taskDescription;
     taskInfo.repetition = taskRepetition;
 
-    console.log("Log---> " + taskInfo);
+    console.log("Log---> " + req);
 
     if (taskIsLocationEnabled === '1') {
       taskInfo.isLocationEnabled = true;
