@@ -60,6 +60,11 @@ module.exports = {
       type: 'string'
     },
 
+    notificationSent: {
+      type: 'boolean',
+      defaultsTo: 'false'
+    },
+
     repetition: {
       type: 'integer',
       defaultsTo: 0

@@ -4,6 +4,25 @@
  * @description :: Server-side logic for managing Tasks
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
+var firebase = require('firebase-admin');
+var fs = require('fs');
+
+// firebase
+var firebaseAdminFilePath = "config/secret/firebaseAdmin.json";
+var isFirebaseActive = false;
+var firebaseAdmin = null;
+
+if (fs.existsSync(firebaseAdminFilePath)) {
+
+  isFirebaseActive = true;
+  firebaseAdmin = JSON.parse(fs.readFileSync(firebaseAdminFilePath, 'utf8'));
+
+  // firebase.initializeApp({
+  //   credential: firebase.credential.cert(firebaseAdmin),
+  //   databaseURL: "https://allot-2e179.firebaseio.com/"
+  // });
+
+}
 
 module.exports = {
 
@@ -430,6 +449,97 @@ module.exports = {
             });
         })
     }
+  },
+
+  nudgeParticipants: function (req, res) {
+
+    // user creds
+    var id = req.param("id");
+    var token = req.param("token");
+
+    // task Id
+    var taskId = req.param("taskId");
+
+
+    if (!sanitizeString(id) ||
+      !sanitizeString(token) ||
+      !sanitizeString(taskId)) {
+
+      return res.badRequest(badRequestJson);
+    }
+
+    else {
+
+      User
+        .findOne({id: id})
+        .exec(function(err, user) {
+
+          if (err) {
+            return res.json(unexpectedServerErrorJson);
+          }
+
+          if (!user) {
+
+            return res.json(userDoesNotExistJson);
+          }
+
+          User
+            .compareToken(token, user)
+            .then(function(valid)  {
+
+              if (!valid) {
+                res.status = 403;
+                return res.json(forbiddenRequestJson);
+              }
+
+              if (isFirebaseActive) {
+
+              }
+
+              Task
+                .findOne({id: taskId})
+                .populate('participants')
+                .exec(function(err, taskToBeNudged){
+
+                  if (taskToBeNudged) {
+
+                    if (taskToBeNudged.participants) {
+
+                      var payload = {
+                        notification: {
+                          title: "You were nudged!",
+                          body: "For Task: " + taskToBeNudged.title
+                        }
+                      };
+
+                      // Set the message as high priority and have it expire after 24 hours.
+                      var options = {
+                        priority: "high",
+                        timeToLive: 60 * 60 * 24
+                      };
+
+                      taskToBeNudged.participants.forEach(function (eachParticipant) {
+
+                        // console.log("DeviceId: " + eachParticipant.androidDeviceId);
+                        firebase.messaging().sendToDevice(eachParticipant.androidDeviceId.toString(), payload, options)
+                          .then(function(response) {
+                          })
+                          .catch(function(error) {
+                            console.log("Push Notification Failure: " + error);
+                          });
+                      });
+                    }
+                  }
+                });
+              return res.json(nudgingDone);
+            })
+            .catch(function(err){
+
+              res.status = 403;
+              return res.json(forbiddenRequestJson);
+            });
+        })
+    }
   }
 
 };
@@ -444,6 +554,7 @@ var invalidLoginJson = {status: 403, msg: "Invalid email/password"};
 var invalidGroupCode = {status: 403, msg: "Invalid Group Code"};
 var taskCreatedCode = {status: 200, msg: "Task Created"};
 var taskMarkedAsDone = {status: 200, msg: "Task Marked As Done"};
+var nudgingDone = {status: 200, msg: "Nudged"};
 
 /**
  * Sanitizes input.

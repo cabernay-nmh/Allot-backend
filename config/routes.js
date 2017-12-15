@@ -95,6 +95,11 @@ module.exports.routes = {
   '/api/task/markAsDone': {
     controller: 'TaskController',
     action: 'markAsDone'
+  },
+
+  '/api/task/nudgeParticipants': {
+    controller: 'TaskController',
+    action: 'nudgeParticipants'
   }
 
 
