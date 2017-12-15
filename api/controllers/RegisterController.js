@@ -56,8 +56,12 @@ module.exports = {
                   createdUser.lastName = newUser.lastName;
                   createdUser.email = newUser.email;
                   createdUser.status = 200;
-                  createdUser.msg = "User created successfully"
-                  createdUser.token = JwtService.issue({email: newUser.email})
+                  createdUser.msg = "User created successfully";
+                  createdUser.token = JwtService.issue({email: newUser.email});
+
+                  // update user with new token
+                  User.update({id: newUser.id}, {token: createdUser.token})
+                    .exec(function(err, record){});
 
                   return res.json(createdUser);
                 }
